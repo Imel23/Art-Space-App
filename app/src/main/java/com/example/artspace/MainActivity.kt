@@ -12,12 +12,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,25 +50,61 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ArtSpaceScreen(){
-    val image = painterResource(id = R.drawable.scott)
-    val contentDescription= "Scott Owen art"
+    var artIndex by remember { mutableStateOf(0) }
+
+    var image = painterResource(id = R.drawable.pexels_steve_johnson_1545506)
+    var contentDescription = stringResource(id = R.string.content_description_1)
+    var artWorkTitle=stringResource(id = R.string.art_description_1)
+    var artWorkArtist=stringResource(id = R.string.art_author_1)
+
+    when(artIndex){
+        0 -> {
+            image = painterResource(id = R.drawable.pexels_steve_johnson_1545506)
+            contentDescription = stringResource(id = R.string.content_description_1)
+            artWorkTitle=stringResource(id = R.string.art_description_1)
+            artWorkArtist=stringResource(id = R.string.art_author_1)
+        }
+        1->{
+            image = painterResource(id = R.drawable.pexels_steve_johnson_1109354)
+            contentDescription = stringResource(id = R.string.content_description_2)
+            artWorkTitle=stringResource(id = R.string.art_description_2)
+            artWorkArtist=stringResource(id = R.string.art_author_2)
+        }
+        2->{
+            image = painterResource(id = R.drawable.pexels_ann_h_3095769)
+            contentDescription = stringResource(id = R.string.content_description_3)
+            artWorkTitle=stringResource(id = R.string.art_description_3)
+            artWorkArtist=stringResource(id = R.string.art_author_3)
+        }
+        3->{
+            image = painterResource(id = R.drawable.pexels_torsten_dettlaff_971546)
+            contentDescription = stringResource(id = R.string.content_description_4)
+            artWorkTitle=stringResource(id = R.string.art_description_4)
+            artWorkArtist=stringResource(id = R.string.art_author_4)
+        }
+    }
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
            ArtWorkWall(
-            image,
-            contentDescription,
-            modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 60.dp)
+               image,
+               contentDescription,
+               modifier = Modifier
+                   .padding(horizontal = 20.dp, vertical = 60.dp)
+                   .size(width = 400.dp, height = 450.dp)
            )
             ArtWorkDescriptor(
-                artWorkTitle= stringResource(id = R.string.art_description),
-                artWorkArtist=stringResource(id = R.string.art_author),
+                artWorkTitle = artWorkTitle,
+                artWorkArtist = artWorkArtist,
                 modifier=Modifier,
             )
-            DisplayController()
-
+            DisplayController(
+                onClickNext = {if(artIndex<3) artIndex++ else artIndex=3},
+                onClickPrevious = {if(artIndex>0) artIndex-- else artIndex=0},
+                Modifier.fillMaxSize().padding(bottom = 40.dp)
+            )
     }
 }
 
@@ -75,13 +116,13 @@ fun ArtWorkWall(
 ){
     Surface(
         modifier = modifier,
-        shadowElevation = 9.dp
+        shadowElevation = 9.dp,
     ) {
         Image(
             painter = image,
             contentDescription = contentDescription,
-            contentScale = ContentScale.Fit,
-            modifier = Modifier.padding(40.dp)
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.padding(20.dp)
         )
     }
 }
@@ -123,13 +164,14 @@ fun ArtWorkDescriptor(
 }
 
 @Composable
-fun DisplayController(){
+fun DisplayController(onClickNext: ()-> Unit, onClickPrevious: ()-> Unit, modifier: Modifier){
     Row(
         horizontalArrangement=Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
+        verticalAlignment = Alignment.Bottom,
+        modifier = modifier
     ){
         Button(
-            onClick = { /*TODO*/ },
+            onClick = onClickPrevious,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xff495c92)
             ),
@@ -144,7 +186,7 @@ fun DisplayController(){
         }
         Spacer(modifier = Modifier.padding(20.dp))
         Button(
-            onClick = { /*TODO*/ },
+            onClick = onClickNext,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xff495c92)
             ),
@@ -164,6 +206,5 @@ fun DisplayController(){
 @Composable
 fun ArtworkWallPreview() {
     ArtSpaceTheme {
-        DisplayController()
      }
 }

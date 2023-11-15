@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">Art Space</string>
-    <string name="art_description">Still Life of Blue Rose and
-Other Flowers</string>
-    <string name="art_author">Owen Scott (2021)</string>
+
+    <string name="art_author_1">Steve Johnson (2018)</string>
+    <string name="art_description_1">Abstract Painting</string>
+    <string name="content_description_1">Abstract Painting</string>
+    <string name="art_author_2">Steve Johnson (2018)</string>
+    <string name="art_description_2">Photo of Abstract Painting On Canvas</string>
+    <string name="content_description_2">Photo of Abstract Painting</string>
+    <string name="art_author_3">Ann h (2019)</string>
+    <string name="art_description_3">Abstract Wallpaper</string>
+    <string name="content_description_3">Abstract Wallpaper</string>
+    <string name="art_author_4">Torsten Dettlaff (2018)</string>
+    <string name="art_description_4">Close-Up Photo Of Painting</string>
+    <string name="content_description_4">Photo Of Painting</string>
+
 </resources>
