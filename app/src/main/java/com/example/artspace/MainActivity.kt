@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -83,37 +83,45 @@ fun ArtSpaceScreen(){
             artWorkArtist=stringResource(id = R.string.art_author_4)
         }
     }
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ArtWorkWall(
+                image,
+                contentDescription,
+                modifier = Modifier
+                    .weight(0.6f) // Allocate 60% of the space to the image
+                    .padding(16.dp) // Apply padding around the image
 
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-           ArtWorkWall(
-               image,
-               contentDescription,
-               modifier = Modifier
-                   .padding(horizontal = 20.dp, vertical = 60.dp)
-                   .size(width = 400.dp, height = 450.dp)
-           )
+            )
+
             ArtWorkDescriptor(
                 artWorkTitle = artWorkTitle,
                 artWorkArtist = artWorkArtist,
-                modifier=Modifier,
+                modifier = Modifier
+                    .weight(0.05f) // Allocate 20% of the space to the artwork description
             )
             DisplayController(
-                onClickNext = {if(artIndex<3) artIndex++ else artIndex=3},
-                onClickPrevious = {if(artIndex>0) artIndex-- else artIndex=0},
-                Modifier.fillMaxSize().padding(bottom = 40.dp)
+                onClickNext = { if (artIndex < 3) artIndex++ else artIndex = 3 },
+                onClickPrevious = { if (artIndex > 0) artIndex-- else artIndex = 0 },
+                Modifier
+                    .weight(0.35f) // Allocate 20% of the space to the display controller
+                    .fillMaxWidth()
+                    .padding(20.dp)
             )
+        }
     }
 }
 
 @Composable
 fun ArtWorkWall(
     image: Painter,
-    contentDescription:String,
-    modifier:Modifier,
+    contentDescription: String,
+    modifier: Modifier,
 ){
+    // Ensure the Surface has a size before applying additional modifiers.
     Surface(
         modifier = modifier,
         shadowElevation = 9.dp,
@@ -121,8 +129,7 @@ fun ArtWorkWall(
         Image(
             painter = image,
             contentDescription = contentDescription,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.padding(20.dp)
+            contentScale = ContentScale.Fit, // Adjust this based on your needs
         )
     }
 }
@@ -134,9 +141,7 @@ fun ArtWorkDescriptor(
     modifier: Modifier
 ){
     Surface(
-        modifier= Modifier
-            .fillMaxWidth()
-            .padding(20.dp),
+        modifier= Modifier,
         color = Color(0xFFecebf4),
     ){
         Column(
@@ -166,7 +171,7 @@ fun ArtWorkDescriptor(
 @Composable
 fun DisplayController(onClickNext: ()-> Unit, onClickPrevious: ()-> Unit, modifier: Modifier){
     Row(
-        horizontalArrangement=Arrangement.Center,
+        horizontalArrangement=Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Bottom,
         modifier = modifier
     ){
@@ -184,7 +189,7 @@ fun DisplayController(onClickNext: ()-> Unit, onClickPrevious: ()-> Unit, modifi
                 Modifier.padding(start = 20.dp, end = 20.dp)
             )
         }
-        Spacer(modifier = Modifier.padding(20.dp))
+        Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = onClickNext,
             colors = ButtonDefaults.buttonColors(
